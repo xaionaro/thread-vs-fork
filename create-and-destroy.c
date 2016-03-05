@@ -5,7 +5,12 @@
 
 #define ITERATIONS 200000
 
-#ifndef THREAD
+#ifdef THREAD
+#	include <pthread.h>
+#else
+#	include <unistd.h>
+#	include <sys/types.h>
+#	include <sys/wait.h>
 #endif
 
 void *helper_proc(void *arg) {
@@ -21,6 +26,7 @@ int main() {
 
 	while (i++ < ITERATIONS) {
 #ifdef THREAD
+		void *ret;
 		/* result on my machine:
 			real    0m1.455s
 			user    0m0.304s
@@ -28,7 +34,7 @@ int main() {
 		 */
 		pthread_t thread;
 		pthread_create(&thread, NULL, helper_proc, NULL);
-		pthread_join(&thread);
+		pthread_join(thread, &ret);
 #else
 		/* result on my machine:
 			real    0m18.040s

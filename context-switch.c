@@ -1,4 +1,4 @@
-// a test for single-core machine. Result: the same for "-DTHREAD" and without
+/* a test for single-core machine. Result: the same for "-DTHREAD" and without */
 
 #define _GNU_SOURCE
 
@@ -10,7 +10,7 @@
 #include <sys/shm.h>
 #include <unistd.h>
 
-#define ITERATIONS 400
+#define ITERATIONS 40000000
 #define SHMEM_SIZE 4096
 
 #include "atomic.h"
@@ -94,6 +94,10 @@ void *xfork(void *(*funct)(void *arg), void *arg) {
 
 int main(int argc, char *argv[])
 {
+#ifdef THREAD
+	pthread_t thread;
+#endif
+
 	unshare(CLONE_NEWIPC);
 
 	shm_buf = shm_malloc(SHMEM_SIZE);
@@ -101,7 +105,6 @@ int main(int argc, char *argv[])
 	printf("master: pid %i!\n", getpid());
 
 #ifdef THREAD
-	pthread_t thread;
 	pthread_create(&thread, NULL, thread_proc, NULL);
 #else
 	xfork(thread_proc, NULL);
