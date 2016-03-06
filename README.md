@@ -2,7 +2,7 @@ comment
 =======
 
 * "user" and "sys" values of "fork" may be halved due to neglecting of the second process by "time". You should look only on the "real" value.
-* If you want to try 1-CPU mode then you can use "tasksel 0x01 ./context-switch-fork". 1-CPU mode should work on "context switch" in many times slower.
+* If you want to try 1-CPU mode then you can use "taskset 0x01 ./context-switch-fork". 1-CPU mode should work on "context switch" in many times slower.
 
 system
 ======
